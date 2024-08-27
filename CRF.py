@@ -91,7 +91,8 @@ class CRF(nn.Module):
 
                 alpha_t_next_state = prev_alpha + feature_function
                 alpha_t.append(self.log_sum_exp(alpha_t_next_state))
-            prev_alpha = torch.cat(alpha_t).view(1, -1)
+            #prev_alpha = torch.cat(alpha_t).view(1, -1)
+            prev_alpha=torch.tensor(alpha_t).view(1, -1)
         return self.log_sum_exp(prev_alpha)
     
     def _viterbi_algorithm(self, loglikelihoods):
@@ -125,7 +126,8 @@ class CRF(nn.Module):
                 score = feature_function[0][most_likely_state]
                 next_delta.append(score)
                 local_argmaxes.append(most_likely_state)
-            prev_delta = torch.cat(next_delta).view(1, -1)
+            #prev_delta = torch.cat(next_delta).view(1, -1)
+            prev_delta = torch.tensor(next_delta).view(1, -1)
             argmaxes.append(local_argmaxes)
         
         final_state = self.argmax(prev_delta)
